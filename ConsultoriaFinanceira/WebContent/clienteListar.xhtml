@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="modelo.xhtml">
+
+	<ui:define name="titulo">#{msgs.tituloListarCli}</ui:define>
+
+	
+	<ui:define name="conteudo">
+
+		<p:panel>
+				<p:commandButton ajax="false" type="push" value="#{msgs.linkNovo}"
+					action="#{clienteMB.acaoAbrirInclusao}" immediate="true" image="ui-icon-document" />
+		</p:panel>
+
+		<p:dataTable id="tabelaCliente" value="#{clienteMB.clientes}" var="client" 
+		emptyMessage="#{msgs.msgTabelaVazia}." >
+
+			<p:column headerText="#{msgs.campoOpcoes}">
+				<p:panelGrid columns="1">
+					<p:commandLink ajax="false" value="#{msgs.linkAlterar}"
+						action="#{clienteMB.acaoAbrirAlteracao(client.codigo)}" />
+					<p:commandLink ajax="false" value="#{msgs.linkExcluir}"
+						action="#{clienteMB.acaoExcluir(cient.codigo)}" />
+				</p:panelGrid>
+			</p:column>
+
+			<p:column headerText="#{msgs.campoCodigo}">
+				<h:outputText value="#{client.codigo}"></h:outputText>
+			</p:column>
+
+			<p:column headerText="#{msgs.campoNome}">
+				<h:outputText value="#{client.nome}"></h:outputText>
+			</p:column>
+
+			<p:column headerText="#{msgs.campoTel}">
+				<h:outputText value="#{client.telefone}"></h:outputText>
+			</p:column>
+
+			<p:column headerText="#{msgs.campoCpf}">
+				<h:outputText value="#{client.cpf}">
+					<f:convertNumber pattern="###,###,##0.00" />
+				</h:outputText>
+			</p:column>
+
+			
+			<p:column headerText="#{msgs.campoFoto}">
+				<h:graphicImage url="foto.jsf?codigo=#{client.codigo}" width="100"
+					height="100" />
+			</p:column>
+
+		</p:dataTable>
+
+	</ui:define>
+
+</ui:composition>
+</html>

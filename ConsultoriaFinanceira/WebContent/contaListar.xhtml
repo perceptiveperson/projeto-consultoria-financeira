@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="modelo.xhtml">
+
+	<ui:define name="titulo">#{msgs.tituloListarConta}</ui:define>
+
+	<ui:define name="conteudo">
+
+
+		<p:panelGrid columns="2">
+
+			<p:commandButton ajax="false" type="push"
+				value="#{msgs.linkNovaConta}" action="#{contaMB.acaoAbrirInclusao}"
+				immediate="true" image="ui-icon-document" />
+
+			<p:outputLabel value="" />
+
+			<p:outputLabel for="conta" value="#{msgs.campoFiltrarConta}:" />
+			<p:selectOneMenu id="conta" value="#{contaMB.filtroConta}"
+				required="false" converter="cont-converter">
+				<f:selectItem itemLabel="#{msgs.campoSelecione}" itemValue="" />
+				<f:selectItems value="#{contaMB.contas}" var="cont"
+					itemLabel="#{cont.banco}"></f:selectItems>
+			</p:selectOneMenu>
+			
+			<p:outputLabel for="numConta" value="#{msgs.campoFiltrarNumConta}:" />
+				<p:inputText id="numConta" value="#{contaMB.filtroNumConta}"
+					required="false">
+				</p:inputText>
+			
+			<h:outputText value="" />
+			<p:commandButton ajax="true" process="@form" update="tabelaConta"
+				value="#{msgs.botaoPesquisar}" action="#{contaMB.acaoPesquisar}" />
+
+		</p:panelGrid>
+
+		<hr></hr>
+		<p:dataTable id="tabelaConta" value="#{contaMB.contas}" var="cont"
+			 emptyMessage="#{msgs.msgTabelaVazia}.">
+
+			<p:column headerText="#{msgs.campoOpcoes}">
+				<p:panelGrid columns="1">
+					<p:commandLink ajax="false" value="#{msgs.linkAlterar}"
+						action="#{contaMB.acaoAbrirAlteracao(cont.codigo)}" />
+					<p:commandLink ajax="false" value="#{msgs.linkExcluir}"
+						action="#{contaMB.acaoExcluir(cont.codigo)}" />
+				</p:panelGrid>
+			</p:column>
+
+			<p:column headerText="#{msgs.campoCodigo}">
+				<h:outputText value="#{cont.codigo}"></h:outputText>
+			</p:column>
+
+			<p:column headerText="#{msgs.campoNomeBanco}">
+				<h:outputText value="#{cont.banco}"></h:outputText>
+			</p:column>
+
+			<p:column headerText="#{msgs.campoNumConta}">
+				<h:outputText value="#{cont.numeroConta}" />
+			</p:column>
+
+		</p:dataTable>
+
+	</ui:define>
+
+</ui:composition>
+</html>

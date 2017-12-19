@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="modelo.xhtml">
+
+	<f:metadata>
+		<f:event type="postAddToView" listener="#{contaMB.lerConta}" />
+	</f:metadata>
+
+	<ui:define name="titulo">#{msgs.tituloEditarConta}</ui:define>
+
+	<ui:define name="conteudo">
+		
+		<p:panelGrid columns="2">
+			<h:outputText value="#{msgs.campoCodigo}:" />
+			<h:outputText value="#{contaMB.conta.codigo}" />
+									
+			<p:outputLabel for="num" value="#{msgs.campoNumConta}"/>
+			<p:inputText id="num" value="#{contaMB.conta.numeroConta}" required="true"/>
+			
+			<p:outputLabel for="banco" value="#{msgs.campoNomeBanco}"/>
+			<p:inputText id="banco" value="#{contaMB.conta.banco}" required="true" />
+			
+			<p:outputLabel for="saldo" value="#{msgs.campoSaldoConta}"/>
+			<p:inputText id="saldo" value="#{contaMB.conta.saldo}" required="true" />
+						
+		
+		<f:facet name="footer">
+		<h:panelGroup>
+			<p:commandButton ajax="false" value="#{msgs.botaoSalvar}"
+				action="#{contaMB.acaoSalvar}">
+				<f:param name="codParam" value="#{contaMB.conta.codigo}" />
+			</p:commandButton>
+				-
+				<p:commandButton ajax="false" value="#{msgs.botaoCancelar}"
+				action="#{contaMB.acaoCancelar}" immediate="true"></p:commandButton>
+		</h:panelGroup>
+		</f:facet>
+		</p:panelGrid>
+		<hr></hr>
+		
+		<p:panel header="#{msgs.msgVinculoConta}">
+		<p:dataTable id="tabelaContaCliente" value="#{contaMB.clientes}" var="client" 
+		emptyMessage="#{msgs.msgTabelaVazia}." >
+
+			
+			<p:column headerText="#{msgs.campoCodigo}">
+				<h:outputText value="#{client.codigo}"></h:outputText>
+			</p:column>
+
+			<p:column headerText="#{msgs.campoNome}">
+				<h:outputText value="#{client.nome}"></h:outputText>
+			</p:column>
+
+			<p:column headerText="#{msgs.campoTel}">
+				<h:outputText value="#{client.telefone}"></h:outputText>
+			</p:column>
+
+			<p:column headerText="#{msgs.campoCpf}">
+				<h:outputText value="#{client.cpf}">
+					<f:convertNumber pattern="###,###,##0.00" />
+				</h:outputText>
+			</p:column>			
+
+		</p:dataTable>
+		
+		</p:panel>
+
+	</ui:define>
+
+</ui:composition>
+</html>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="modelo.xhtml">
+
+	<f:metadata>
+		<f:event type="postAddToView" listener="#{clienteMB.lerCliente}" />
+	</f:metadata>
+
+	<ui:define name="titulo">#{msgs.tituloEditarCli}</ui:define>
+
+	<ui:define name="conteudo">
+		<table>
+			<tr>
+				<td><p:panelGrid columns="2">
+
+						<h:outputText value="#{msgs.campoCodigo}:" />
+						<h:outputText value="#{cleinteMB.cliente.codigo}" />
+
+						<ui:remove>
+							<p:outputLabel for="conta" value="#{msgs.campoConta}:" />
+							<h:panelGroup>
+								<p:inputText id="conta" value="#{clienteMB.cliente.conta}"
+									converter="cont-converter" required="true" size="5"
+									maxlength="5">
+									<f:ajax event="blur" execute="@this" render="nomeCat" />
+								</p:inputText>
+								<h:outputText id="nomeCat"
+									value=" - #{clienteMB.cliente.conta.nome}" />
+							</h:panelGroup>
+						</ui:remove>
+
+
+						<p:outputLabel for="nome" value="#{msgs.campoNome}:" />
+						<p:inputText id="nome" value="#{clienteMB.cliente.nome}"
+							required="true">
+						</p:inputText>
+
+						<p:outputLabel for="telefone" value="#{msgs.campoTel}:" />
+						<p:inputText id="telefone" value="#{clienteMB.cliente.telefone}"
+							required="true">
+							<f:convertNumber pattern="###,###,##0.00" />
+						</p:inputText>
+
+						<p:outputLabel for="cpf" value="#{msgs.campoCpf}:" />
+						<p:inputText id="cpf" value="#{clienteMB.cliente.cpf}"
+							required="true">
+							<f:convertNumber pattern="###,###,##0.00" />
+						</p:inputText>
+
+						<h:outputText value="#{msgs.campoFoto}:" />
+						<p:fileUpload value="#{clienteMB.uploadedFile}" mode="simple"
+							fileLimit="1" multiple="false" allowTypes="/(\.|\/)(jpeg|jpg)$/"
+							invalidFileMessage="#{msgs.msgTextoFoto}" />
+					</p:panelGrid></td>
+				<td><p:panelGrid columns="2">
+
+						<p:outputLabel for="conta" value="#{msgs.campoContaCli}:" />
+						<p:selectOneMenu id="conta"
+							value="#{clienteMB.cliente.conta}" required="true"
+							converter="cont-converter">
+							<f:selectItem itemLabel="#{msgs.campoSelecione}" itemValue="" />
+							<f:selectItems value="#{contaMB.contas}" var="cont"
+								itemLabel="#{cont.codigo} - #{cont.banco}: #{cont.numeroConta}"></f:selectItems>
+						</p:selectOneMenu>
+					</p:panelGrid></td>
+			</tr>
+		</table>
+		<h:panelGroup>
+			<p:commandButton ajax="false" value="#{msgs.botaoSalvar}"
+				action="#{clienteMB.acaoSalvar}">
+				<f:param name="codParam" value="#{clienteMB.cliente.codigo}" />
+			</p:commandButton>
+				-
+				<p:commandButton ajax="false" value="#{msgs.botaoCancelar}"
+				action="#{clienteMB.acaoCancelar}" immediate="true"></p:commandButton>
+		</h:panelGroup>
+
+	</ui:define>
+
+</ui:composition>
+</html>
